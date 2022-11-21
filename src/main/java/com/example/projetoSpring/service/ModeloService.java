@@ -1,5 +1,6 @@
 package com.example.projetoSpring.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,17 @@ public class ModeloService {
 		return re.save(obj);
 	}
 	
-	public void delete(Modelo obj) {
-		find(obj.getId());
+	public void delete(Integer id) {
+		find(id);
 		try {
-			re.delete(obj);
+			re.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityViolationException("Não é possivel excluir modelo.");
 		}
+	}
+	
+	public List<Modelo> findAll(){
+		return re.findAll();
 	}
 	
 
