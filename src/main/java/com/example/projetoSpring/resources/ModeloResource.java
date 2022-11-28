@@ -1,6 +1,9 @@
 package com.example.projetoSpring.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +53,12 @@ public class ModeloResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<ModeloDto>> findAll() {
+		List<Modelo> list = service.findAll();
+		List<ModeloDto> listDto = list.stream().map(obj -> new ModeloDto(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
 	
 	
 
