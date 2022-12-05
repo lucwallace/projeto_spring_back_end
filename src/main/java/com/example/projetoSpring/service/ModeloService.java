@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.example.projetoSpring.domain.Marca;
@@ -27,14 +30,20 @@ public class ModeloService {
 	
 	public Modelo insert(Modelo obj) {
 		obj.setId(null);
-		return re.save(obj);
+		Modelo objComp = re.findByNome(obj.getNome());
+		
+		if(objComp == null) {
+			return re.save(obj);
+		} else {
+			throw new ObjectNotFoundException("O Modelo '"+obj.getNome()+"' já existe.");
+		}
 	}
 	
 	public Modelo fromDTO(ModeloDto objDto) {
 		Modelo mo = new Modelo(null, objDto.getNome(), objDto.getPreco(), TipoModeloEnum.toEnum(objDto.getIdTipo()));
 		Marca ma = new Marca(objDto.getMarcaId(), null);
 		
-		mo.getMarcas().add(ma);
+	    mo.getMarcas().add(ma);
 		
 		return mo;
 	}
@@ -55,6 +64,11 @@ public class ModeloService {
 	
 	public List<Modelo> findAll(){
 		return re.findAll();
+	}
+	
+	public Page<Modelo> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return re.findAll(pageRequest);
 	}
 	
 

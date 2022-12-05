@@ -2,14 +2,21 @@ package com.example.projetoSpring.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.example.projetoSpring.domain.Modelo;
-import com.example.projetoSpring.enums.TipoModeloEnum;
 
 public class ModeloDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
+	
+	@NotNull(message = "O nome é de preenchimento obrigatório.")
+	@Size(min=3, max=40, message = "O mínimo de caracteres é 3 e o máximo é 40")
 	private String nome;
+	
 	private Double preco;
 	
 	private Integer marcaId;
