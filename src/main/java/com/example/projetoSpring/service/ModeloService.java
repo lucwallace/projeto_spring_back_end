@@ -35,7 +35,7 @@ public class ModeloService {
 		if(objComp == null) {
 			return re.save(obj);
 		} else {
-			throw new ObjectNotFoundException("O Modelo '"+obj.getNome()+"' já existe.");
+			throw new ObjectNotFoundException("A Modelo '"+obj.getNome()+"' já existe.");
 		}
 	}
 	

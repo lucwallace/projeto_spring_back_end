@@ -19,7 +19,7 @@ import com.example.projetoSpring.enums.TipoClienteEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-public class Cliente implements Serializable {
+public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,26 +27,24 @@ public class Cliente implements Serializable {
 	private Integer id;
 	private String nome;
 	private String email;
-	private String cpfOuCnpj;
 	private Integer tipo;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "usuario")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
-	public Cliente() {
+	public Usuario() {
 	}
 
-	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoClienteEnum tipo) {
+	public Usuario(Integer id, String nome, String email, TipoClienteEnum tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = tipo.getCodigo();
 	}
 
@@ -72,14 +70,6 @@ public class Cliente implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getCpfOuCnpj() {
-		return cpfOuCnpj;
-	}
-
-	public void setCpfOuCnpj(String cpfOuCnpj) {
-		this.cpfOuCnpj = cpfOuCnpj;
 	}
 
 	public TipoClienteEnum getTipo() {
@@ -122,8 +112,8 @@ public class Cliente implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cliente other = (Cliente) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome) && Objects.equals(email, other.email) && Objects.equals(cpfOuCnpj, other.cpfOuCnpj) && Objects.equals(tipo, other.tipo);
+		Usuario other = (Usuario) obj;
+		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome) && Objects.equals(email, other.email) && Objects.equals(tipo, other.tipo);
 	}
 
 

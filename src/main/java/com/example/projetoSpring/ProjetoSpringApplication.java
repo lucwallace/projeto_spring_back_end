@@ -8,21 +8,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.projetoSpring.domain.Cidade;
-import com.example.projetoSpring.domain.Cliente;
 import com.example.projetoSpring.domain.Endereco;
 import com.example.projetoSpring.domain.Estado;
 import com.example.projetoSpring.domain.Marca;
 import com.example.projetoSpring.domain.Modelo;
-import com.example.projetoSpring.domain.TipoCarro;
+import com.example.projetoSpring.domain.Usuario;
 import com.example.projetoSpring.enums.TipoClienteEnum;
 import com.example.projetoSpring.enums.TipoModeloEnum;
 import com.example.projetoSpring.repositories.CidadeRepository;
-import com.example.projetoSpring.repositories.ClienteRepository;
 import com.example.projetoSpring.repositories.EnderecoRepository;
 import com.example.projetoSpring.repositories.EstadoRepository;
 import com.example.projetoSpring.repositories.MarcaRepository;
 import com.example.projetoSpring.repositories.ModeloRepository;
 import com.example.projetoSpring.repositories.TipoCarroRepository;
+import com.example.projetoSpring.repositories.UsuarioRepository;
 
 @SpringBootApplication
 public class ProjetoSpringApplication implements CommandLineRunner{
@@ -46,7 +45,7 @@ public class ProjetoSpringApplication implements CommandLineRunner{
 	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
-	private ClienteRepository clienteRepository;
+	private UsuarioRepository clienteRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetoSpringApplication.class, args);
@@ -85,7 +84,7 @@ public class ProjetoSpringApplication implements CommandLineRunner{
 		est1.getCidades().addAll(Arrays.asList(c1, c3));
 		est2.getCidades().addAll(Arrays.asList(c2));
 		
-		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoClienteEnum.PESSOAFISICA);
+		Usuario cli1 = new Usuario(null, "Maria Silva", "maria@gmail.com", TipoClienteEnum.PESSOAFISICA);
 
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
