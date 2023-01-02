@@ -7,7 +7,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.example.projetoSpring.domain.Usuario;
+import com.example.projetoSpring.service.validation.UsuarioValidacoes;
 
+@UsuarioValidacoes
 public class UsuarioDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

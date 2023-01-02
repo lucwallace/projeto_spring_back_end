@@ -25,5 +25,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	@Transactional(readOnly = true)
 	@Query("SELECT obj FROM Endereco obj WHERE obj.id = MAX(obj.id) ")
 	public Endereco findByIdMax();
+	
+	@Transactional(readOnly = true)
+	Usuario findByEmail(String email);
+	
+	@Transactional
+	@Query("SELECT obj FROM Usuario obj WHERE obj.id = ?1 AND obj.email = ?2 ")
+	Usuario findByEmailId(Integer id, String email);
 
 }
