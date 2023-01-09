@@ -17,23 +17,23 @@ import com.example.projetoSpring.service.SmtpEmailService;
 public class DevConfig {
 	
 	@Autowired
-	public DBService se;
+	private DBService dbService;
 	
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
 	
 	@Bean
-	public boolean instantiateTestDatabase() throws ParseException{
+	public boolean instantiateDatabase() throws ParseException {
 		
-		if(!"create".equals(strategy)) {
+		if (!"create".equals(strategy)) {
 			return false;
 		}
 		
-		se.instantiateTestDatabase();
+		dbService.instantiateTestDatabase();
 		return true;
-		
 	}
 	
+	@Bean
 	public EmailService emailService() {
 		return new SmtpEmailService();
 	}
