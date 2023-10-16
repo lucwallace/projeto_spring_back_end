@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -15,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.example.projetoSpring.enums.TipoClienteEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -31,9 +33,8 @@ public class Usuario implements Serializable {
 	private String email;
 	private Integer tipo;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "usuario")
-	private List<Endereco> enderecos = new ArrayList<>();
+	@OneToOne(mappedBy = "usuarios", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Endereco enderecos = new Endereco();
 	
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
@@ -82,11 +83,11 @@ public class Usuario implements Serializable {
 		this.tipo = tipo.getCodigo();
 	}
 
-	public List<Endereco> getEnderecos() {
+	public Endereco getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
+	public void setEnderecos(Endereco enderecos) {
 		this.enderecos = enderecos;
 	}
 

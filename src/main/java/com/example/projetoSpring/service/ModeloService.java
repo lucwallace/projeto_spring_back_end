@@ -41,9 +41,20 @@ public class ModeloService {
 	
 	public Modelo fromDTO(ModeloDto objDto) {
 		Modelo mo = new Modelo(null, objDto.getNome(), objDto.getPreco(), TipoModeloEnum.toEnum(objDto.getIdTipo()));
-		Marca ma = new Marca(objDto.getMarcaId(), null);
+		//Marca ma = new Marca(objDto.getMarcaId(), null);
 		
-	    mo.getMarcas().add(ma);
+	   // mo.getMarcas().add(ma);
+		//re.insertModeloMarca(objDto.getMarcaId(), objDto.getId());
+		
+		return mo;
+	}
+	
+	public Modelo insertMarcaModelo(ModeloDto objDto, Integer idModelo) {
+		Modelo mo = new Modelo(null, objDto.getNome(), objDto.getPreco(), TipoModeloEnum.toEnum(objDto.getIdTipo()));
+		//Marca ma = new Marca(objDto.getMarcaId(), null);
+		
+	   // mo.getMarcas().add(ma);
+		re.insertModeloMarca(objDto.getMarcaId(), idModelo);
 		
 		return mo;
 	}

@@ -82,10 +82,14 @@ public class DBService {
 
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
-		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
-		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", c2);
 
-		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		//cli1.getEnderecos().addAll(Arrays.asList(e1));
+		
+		cli1.setEnderecos(e1);
+		
+		e1.setUsuarios(cli1);
 
 	
 		marcaRepository.saveAll(Arrays.asList(mac1, mac2));

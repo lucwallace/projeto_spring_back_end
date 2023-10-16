@@ -47,9 +47,20 @@ public class UsuarioService {
 	
 	public Usuario fromDTO(UsuarioDto objDto) {
 		Usuario user = new Usuario(null, objDto.getNome(), objDto.getEmail(), TipoClienteEnum.toEnum(objDto.getIdTipo()));
-		Endereco ed = new Endereco(objDto.getEnderecoId(), null, null, null, null, null, null, null);
+		//Endereco ed = new Endereco(objDto.getEnderecoId(), null, null, null, null, null, null);
 		
-		user.getEnderecos().add(ed);
+		//user.setEnderecos(ed);
+		
+		return user;
+	}
+	
+	public Usuario insertUsuarioEndereco(UsuarioDto objDto, Integer idUsuario) {
+		Usuario user = new Usuario(null, objDto.getNome(), objDto.getEmail(), TipoClienteEnum.toEnum(objDto.getIdTipo()));
+		//Endereco ed = new Endereco(objDto.getEnderecoId(), null, null, null, null, null, null);
+		
+		//user.setEnderecos(ed);
+		
+		re.insertUsuarioEndereco(idUsuario, objDto.getEnderecoId());
 		
 		return user;
 	}
@@ -91,7 +102,7 @@ public class UsuarioService {
 		
 		idUltimo = edM.size() + 1;
 		
-		edS.setUsuario(usuario);
+		//edS.setUsuario(usuario);
 		
 		re.insertEndereco(idUltimo, edS.getLogradouro(), edS.getNumero(), edS.getComplemento(), edS.getBairro(), edS.getCep(), usuario.getId(), edS.getCidade().getId());
 		

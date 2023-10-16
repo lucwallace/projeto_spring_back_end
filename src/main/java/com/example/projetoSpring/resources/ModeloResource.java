@@ -40,6 +40,8 @@ public class ModeloResource {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 			.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		obj = service.insertMarcaModelo(objDto, obj.getId());
+		
 		return ResponseEntity.created(uri).build();
 	}
 	

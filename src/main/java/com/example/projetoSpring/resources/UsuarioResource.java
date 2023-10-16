@@ -43,6 +43,9 @@ public class UsuarioResource {
 		service.insertEndereco(objDto, obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 			.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		
+		obj = service.insertUsuarioEndereco(objDto, obj.getId());
+		
 		return ResponseEntity.created(uri).build();
 	}
 	

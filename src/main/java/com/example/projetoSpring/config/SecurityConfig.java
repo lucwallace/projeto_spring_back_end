@@ -24,15 +24,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final String [] PUBLIC_MATCHERS = {
 			"/h2-console/**",
-			"/usuarios/**"
+			"/usuarios/**",
+			"/marcas/**",
+			"/modelos/**",
+			"/cidades/**",
+			"/estados/**",
+			"/enderecos/**",
+			"/tipoCarros/**"
 	};
 	
 	private static final String [] PUBLIC_MATCHERS_GET = {
-			"/usuarios/**"
+			"/usuarios/**",
+			"/marcas/**",
+			"/modelos/**",
+			"/cidades/**",
+			"/estados/**",
+			"/enderecos/**",
+			"/tipoCarros/**"
 	};
 	
 	private static final String [] PUBLIC_MATCHERS_POST = {
-			"/usuarios/**"
+			"/usuarios/**",
+			"/marcas/**",
+			"/modelos/**",
+			"/cidades/**",
+			"/estados/**",
+			"/enderecos/**",
+			"/tipoCarros/**"
+	};
+	
+	private static final String [] PUBLIC_MATCHERS_PUT = {
+			"/usuarios/**",
+			"/marcas/**",
+			"/modelos/**",
+			"/cidades/**",
+			"/estados/**",
+			"/enderecos/**",
+			"/tipoCarros/**"
 	};
 	
 	@Override
@@ -43,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 		
 		http.cors().and().csrf().disable();
-		http.authorizeHttpRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll().antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
+		http.authorizeHttpRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll().antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll().antMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_PUT).permitAll().anyRequest().authenticated();
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		

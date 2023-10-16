@@ -34,7 +34,7 @@ public class MarcaService {
 		if(objComp == null) {
 			return re.save(obj);
 		} else {
-			throw new ObjectNotFoundException("O Marca '"+obj.getNome()+"' já existe.");
+			throw new ObjectNotFoundException("A Marca do veiculo '"+obj.getNome()+"' já existe.");
 		}
 	}
 	

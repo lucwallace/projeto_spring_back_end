@@ -1,16 +1,20 @@
 package com.example.projetoSpring.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Endereco implements Serializable {
@@ -25,10 +29,12 @@ public class Endereco implements Serializable {
 	private String bairro;
 	private String cep;
 
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name="usuario_id")
-	private Usuario usuario;
+	@JsonIgnore
+	@OneToOne
+	@JoinTable(name = "Usuario_Endereco", joinColumns = @JoinColumn(name = "endereco_id"),
+	inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	
+	private Usuario usuarios; 
 
 	@ManyToOne
 	@JoinColumn(name="cidade_id")
@@ -38,7 +44,7 @@ public class Endereco implements Serializable {
 	}
 
 	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
-			Usuario usuario, Cidade cidade) {
+			 Cidade cidade) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -46,7 +52,6 @@ public class Endereco implements Serializable {
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cep = cep;
-		this.usuario = usuario;
 		this.setCidade(cidade);
 	}
 
@@ -98,20 +103,20 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	public Cidade getCidade() {
 		return cidade;
 	}
 
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
+	}
+
+	public Usuario getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(Usuario usuarios) {
+		this.usuarios = usuarios;
 	}
 
 	@Override

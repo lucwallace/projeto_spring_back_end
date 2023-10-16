@@ -13,7 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.example.projetoSpring.enums.TipoClienteEnum;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.example.projetoSpring.enums.TipoModeloEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -40,6 +42,7 @@ public class Modelo implements Serializable{
 	
 	@JsonIgnore
 	@ManyToMany
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinTable(name = "Marca_Modelo", joinColumns = @JoinColumn(name = "modelo_id"),
 	inverseJoinColumns = @JoinColumn(name = "marca_id"))
 	

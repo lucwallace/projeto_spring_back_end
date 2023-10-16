@@ -32,5 +32,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	@Transactional
 	@Query("SELECT obj FROM Usuario obj WHERE obj.id = ?1 AND obj.email = ?2 ")
 	Usuario findByEmailId(Integer id, String email);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "INSERT INTO usuario_endereco (usuario_id, endereco_id) VALUES (?1, ?2)", nativeQuery = true)
+	void insertUsuarioEndereco(Integer usuarioId, Integer enderecoId);
 
 }

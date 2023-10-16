@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class Marca implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -29,6 +32,7 @@ public class Marca implements Serializable{
 	}
 	
 	@ManyToMany(mappedBy = "marcas")
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
 	private List<Modelo> modelos = new ArrayList<>();
 	
 
