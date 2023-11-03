@@ -22,10 +22,8 @@ public class UsuarioDto implements Serializable{
 	@Email(message = "O E-mail não preenchido no formato correto.")
 	private String email;
 	
-	private String tipo;
+	private Integer tipo;
 	
-	@NotNull(message = "O tipo de usuário é de preenchimento obrigatório.")
-	private Integer idTipo;
 	private Integer enderecoId;
 	
 	public UsuarioDto() {}
@@ -34,7 +32,7 @@ public class UsuarioDto implements Serializable{
 		id = obj.getId();
 		nome = obj.getNome();
 		email = obj.getEmail();
-		tipo = obj.getTipo().getDescricao();
+		tipo = obj.getTipo();
 	}
 
 	public String getNome() {
@@ -61,20 +59,12 @@ public class UsuarioDto implements Serializable{
 		this.email = email;
 	}
 
-	public String getTipo() {
+	public Integer getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
-	}
-
-	public Integer getIdTipo() {
-		return idTipo;
-	}
-
-	public void setIdTipo(Integer idTipo) {
-		this.idTipo = idTipo;
 	}
 
 	public Integer getEnderecoId() {

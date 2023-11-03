@@ -43,12 +43,12 @@ public class Usuario implements Serializable {
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nome, String email, TipoClienteEnum tipo) {
+	public Usuario(Integer id, String nome, String email, Integer tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.tipo = tipo.getCodigo();
+		this.tipo = tipo;
 	}
 
 	public Integer getId() {
@@ -75,12 +75,12 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public TipoClienteEnum getTipo() {
-		return TipoClienteEnum.toEnum(tipo);
+	public Integer getTipo() {
+		return tipo;
 	}
 
-	public void setTipo(TipoClienteEnum tipo) {
-		this.tipo = tipo.getCodigo();
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
 	}
 
 	public Endereco getEnderecos() {

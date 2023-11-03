@@ -40,7 +40,7 @@ public class UsuarioResource {
 	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioDto objDto) {
 		Usuario obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
-		service.insertEndereco(objDto, obj);
+		//service.insertEndereco(objDto, obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 			.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		

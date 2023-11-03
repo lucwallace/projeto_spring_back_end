@@ -46,7 +46,7 @@ public class UsuarioService {
 	}
 	
 	public Usuario fromDTO(UsuarioDto objDto) {
-		Usuario user = new Usuario(null, objDto.getNome(), objDto.getEmail(), TipoClienteEnum.toEnum(objDto.getIdTipo()));
+		Usuario user = new Usuario(null, objDto.getNome(), objDto.getEmail(), objDto.getTipo());
 		//Endereco ed = new Endereco(objDto.getEnderecoId(), null, null, null, null, null, null);
 		
 		//user.setEnderecos(ed);
@@ -55,7 +55,7 @@ public class UsuarioService {
 	}
 	
 	public Usuario insertUsuarioEndereco(UsuarioDto objDto, Integer idUsuario) {
-		Usuario user = new Usuario(null, objDto.getNome(), objDto.getEmail(), TipoClienteEnum.toEnum(objDto.getIdTipo()));
+		Usuario user = new Usuario(null, objDto.getNome(), objDto.getEmail(), objDto.getTipo());
 		//Endereco ed = new Endereco(objDto.getEnderecoId(), null, null, null, null, null, null);
 		
 		//user.setEnderecos(ed);

@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/cidades/**",
 			"/estados/**",
 			"/enderecos/**",
-			"/tipoCarros/**"
+			"/tipoCarros/**",
+			"/tipoUsuario/**"
 	};
 	
 	private static final String [] PUBLIC_MATCHERS_GET = {
@@ -40,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/cidades/**",
 			"/estados/**",
 			"/enderecos/**",
-			"/tipoCarros/**"
+			"/tipoCarros/**",
+			"/tipoUsuario/**"
 	};
 	
 	private static final String [] PUBLIC_MATCHERS_POST = {
