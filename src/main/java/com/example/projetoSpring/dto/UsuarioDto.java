@@ -11,7 +11,7 @@ import com.example.projetoSpring.service.validation.UsuarioValidacoes;
 
 @UsuarioValidacoes
 public class UsuarioDto implements Serializable{
-	private static final long serialVersionUID = 1L;
+	/*private static final long serialVersionUID = 1L;
 	
 	private Integer id;
 	
@@ -24,15 +24,12 @@ public class UsuarioDto implements Serializable{
 	
 	private Integer tipo;
 	
-	private Integer enderecoId;
-	
 	public UsuarioDto() {}
 	
 	public UsuarioDto(Usuario obj) {
 		id = obj.getId();
 		nome = obj.getNome();
 		email = obj.getEmail();
-		tipo = obj.getTipo();
 	}
 
 	public String getNome() {
@@ -57,25 +54,6 @@ public class UsuarioDto implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Integer getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
-	}
-
-	public Integer getEnderecoId() {
-		return enderecoId;
-	}
-
-	public void setEnderecoId(Integer enderecoId) {
-		this.enderecoId = enderecoId;
-	}
-	
-	
-	
+	}*/
 
 }

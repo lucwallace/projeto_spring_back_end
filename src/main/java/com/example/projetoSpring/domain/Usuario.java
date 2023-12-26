@@ -1,70 +1,60 @@
 package com.example.projetoSpring.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import com.example.projetoSpring.enums.TipoClienteEnum;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	private String nome;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String username;
+
 	private String email;
-	private Integer tipo;
-	
-	@OneToOne(mappedBy = "usuarios", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Endereco enderecos = new Endereco();
-	
-	@ElementCollection
-	@CollectionTable(name = "TELEFONE")
-	private Set<String> telefones = new HashSet<>();
+
+	private String password;
 
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nome, String email, Integer tipo) {
+	public Usuario(String username, String email, String password) {
 		super();
-		this.id = id;
-		this.nome = nome;
+		this.username = username;
 		this.email = email;
-		this.tipo = tipo;
+		this.password = password;
 	}
 
-	public Integer getId() {
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "username_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {
@@ -75,28 +65,20 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public Integer getTipo() {
-		return tipo;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public Endereco getEnderecos() {
-		return enderecos;
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
-	public void setEnderecos(Endereco enderecos) {
-		this.enderecos = enderecos;
-	}
-
-	public Set<String> getTelefones() {
-		return telefones;
-	}
-
-	public void setTelefones(Set<String> telefones) {
-		this.telefones = telefones;
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
@@ -116,9 +98,8 @@ public class Usuario implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome) && Objects.equals(email, other.email) && Objects.equals(tipo, other.tipo);
+		return Objects.equals(id, other.id) && Objects.equals(username, other.username) && Objects.equals(email, other.email)
+				&& Objects.equals(password, other.password);
 	}
-
-
 
 }

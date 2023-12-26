@@ -28,11 +28,6 @@ public class Endereco implements Serializable {
 	private String complemento;
 	private String bairro;
 	private String cep;
-
-	@JsonIgnore
-	@OneToOne
-	@JoinTable(name = "Usuario_Endereco", joinColumns = @JoinColumn(name = "endereco_id"),
-	inverseJoinColumns = @JoinColumn(name = "usuario_id"))
 	
 	private Usuario usuarios; 
 

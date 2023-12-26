@@ -28,8 +28,14 @@ public class UsuarioValidator implements ConstraintValidator<UsuarioValidacoes, 
 	public void initialize(UsuarioValidacoes ann) {
 		
 	}
-	
+
 	@Override
+	public boolean isValid(UsuarioDto value, ConstraintValidatorContext context) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/*@Override
 	public boolean isValid(UsuarioDto objDto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
@@ -64,6 +70,6 @@ public class UsuarioValidator implements ConstraintValidator<UsuarioValidacoes, 
 		
 		return list.isEmpty();
 		
-	}
+	}*/
 	
 }

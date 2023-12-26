@@ -27,7 +27,7 @@ import com.example.projetoSpring.service.UsuarioService;
 @RequestMapping(value="/usuarios")
 public class UsuarioResource {
 
-	@Autowired
+	/*@Autowired
 	private UsuarioService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
@@ -44,7 +44,7 @@ public class UsuarioResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 			.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
-		obj = service.insertUsuarioEndereco(objDto, obj.getId());
+		//obj = service.insertUsuarioEndereco(objDto, obj.getId());
 		
 		return ResponseEntity.created(uri).build();
 	}
@@ -80,6 +80,6 @@ public class UsuarioResource {
 		Page<Usuario> list = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<UsuarioDto> listDto = list.map(obj -> new UsuarioDto(obj));
 		return ResponseEntity.ok().body(listDto);
-	}
+	}*/
 	
 }
