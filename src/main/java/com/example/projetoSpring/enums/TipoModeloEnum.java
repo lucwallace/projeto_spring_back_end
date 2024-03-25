@@ -1,7 +1,5 @@
 package com.example.projetoSpring.enums;
 
-import java.util.Iterator;
-
 public enum TipoModeloEnum {
 
 	HATCH(1, "HATCH"),

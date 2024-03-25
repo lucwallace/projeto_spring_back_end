@@ -2,10 +2,6 @@ package com.example.projetoSpring.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.example.projetoSpring.domain.Usuario;
 import com.example.projetoSpring.service.validation.UsuarioValidacoes;
 

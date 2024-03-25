@@ -1,7 +1,5 @@
 package com.example.projetoSpring.enums;
 
-import java.util.Iterator;
-
 public enum TipoClienteEnum {
 
 	PESSOAFISICA(1, "Pessoa Física"),

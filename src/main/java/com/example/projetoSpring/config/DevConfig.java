@@ -3,14 +3,11 @@ package com.example.projetoSpring.config;
 import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.example.projetoSpring.service.DBService;
-import com.example.projetoSpring.service.EmailService;
-import com.example.projetoSpring.service.SmtpEmailService;
 
 @Configuration
 @Profile("dev")

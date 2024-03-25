@@ -2,11 +2,10 @@ package com.example.projetoSpring.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.example.projetoSpring.domain.Modelo;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class ModeloDto implements Serializable{
 	private static final long serialVersionUID = 1L;

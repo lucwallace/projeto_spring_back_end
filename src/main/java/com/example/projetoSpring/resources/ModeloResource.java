@@ -4,8 +4,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.projetoSpring.domain.Modelo;
 import com.example.projetoSpring.dto.ModeloDto;
 import com.example.projetoSpring.service.ModeloService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value="/modelos")
