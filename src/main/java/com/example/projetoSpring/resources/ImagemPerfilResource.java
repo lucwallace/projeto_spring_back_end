@@ -24,11 +24,11 @@ public class ImagemPerfilResource {
     private ImagemPerfilService imagemPerfilService;
 
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id_user") Long idUser){
         String message = "";
 
         try {
-            imagemPerfilService.upload(file);
+            imagemPerfilService.upload(file, idUser);
 
             message = "Upload efetuado com sucesso";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
