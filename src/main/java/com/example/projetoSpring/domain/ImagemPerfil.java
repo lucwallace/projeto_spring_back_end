@@ -1,13 +1,11 @@
 package com.example.projetoSpring.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.Optional;
 
 @Entity
 @Data
@@ -26,6 +24,8 @@ public class ImagemPerfil {
     @Lob
     private byte[] imageData;
 
-	private Long id_user;
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "user_id")
+    private Usuario user;
 
 }

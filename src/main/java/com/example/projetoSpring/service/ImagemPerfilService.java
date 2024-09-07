@@ -31,13 +31,22 @@ public class ImagemPerfilService {
 
     public ImagemPerfil upload(MultipartFile file, Long idUser) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        ImagemPerfil image = new ImagemPerfil(null, fileName, file.getContentType(), file.getBytes(), idUser);
 
         Optional<Usuario> user = usuarioRepository.findById(idUser);
 
         if(user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não existe");
         }
+
+        Usuario us = new Usuario();
+
+        us.setId(user.get().getId());
+        us.setEmail(user.get().getEmail());
+        us.setUsername(user.get().getUsername());
+        us.setPassword(user.get().getPassword());
+        us.setRoles(user.get().getRoles());
+
+        ImagemPerfil image = new ImagemPerfil(null, fileName, file.getContentType(), file.getBytes(), us);
 
         return imagemPerfilRepository.save(image);
     }
