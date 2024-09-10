@@ -3,6 +3,7 @@ package com.example.projetoSpring.service;
 import com.example.projetoSpring.domain.ImagemPerfil;
 import com.example.projetoSpring.domain.Marca;
 import com.example.projetoSpring.domain.Usuario;
+import com.example.projetoSpring.openApi.ImageUserOpenApiController;
 import com.example.projetoSpring.repositories.ImagemPerfilRepository;
 import com.example.projetoSpring.repositories.UsuarioRepository;
 import com.example.projetoSpring.service.exceptions.ObjectNotFoundException;
@@ -57,6 +58,10 @@ public class ImagemPerfilService {
 
     public Stream<ImagemPerfil> getAllImages(){
         return imagemPerfilRepository.findAll().stream();
+    }
+
+    public ImagemPerfil getImagesByIdUser(Long idUser){
+        return imagemPerfilRepository.findByIdUser(idUser);
     }
 
 }

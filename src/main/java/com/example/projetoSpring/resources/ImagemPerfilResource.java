@@ -3,6 +3,7 @@ package com.example.projetoSpring.resources;
 import com.example.projetoSpring.domain.ImagemPerfil;
 import com.example.projetoSpring.domain.ImagemPerfilResponse;
 import com.example.projetoSpring.message.ResponseMessage;
+import com.example.projetoSpring.openApi.ImageUserOpenApiController;
 import com.example.projetoSpring.service.ImagemPerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value="/imagemperfil")
-public class ImagemPerfilResource {
+public class ImagemPerfilResource implements ImageUserOpenApiController {
 
     @Autowired
     private ImagemPerfilService imagemPerfilService;
@@ -67,6 +68,15 @@ public class ImagemPerfilResource {
         return ResponseEntity.ok()
                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagemPerfil.getNome() + "\"")
                .body(imagemPerfil.getImageData());
+    }
+
+    @RequestMapping(value="/usuario/{id}", method=RequestMethod.GET)
+    public ResponseEntity<byte[]> getFilesByUser(@PathVariable Long id) {
+        ImagemPerfil imagemPerfil = imagemPerfilService.getImagesByIdUser(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagemPerfil.getNome() + "\"")
+                .body(imagemPerfil.getImageData());
     }
 
 }

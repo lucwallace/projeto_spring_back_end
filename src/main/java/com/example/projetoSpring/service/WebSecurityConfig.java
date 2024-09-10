@@ -57,9 +57,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	private static final String[] PUBLIC = { "/imagemperfil/**", "/api/auth/**"
-
-	};
+	private static final String[] PUBLIC = { "/imagemperfil/**", "/api/auth/**", "/swagger-ui/**", "/v3/**" };
 
 	private static final String[] AUTHENTICATED = { "/api/test/**", };
 
