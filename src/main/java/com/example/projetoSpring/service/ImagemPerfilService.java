@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -41,13 +42,15 @@ public class ImagemPerfilService {
 
         Usuario us = new Usuario();
 
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
         us.setId(user.get().getId());
         us.setEmail(user.get().getEmail());
         us.setUsername(user.get().getUsername());
         us.setPassword(user.get().getPassword());
         us.setRoles(user.get().getRoles());
 
-        ImagemPerfil image = new ImagemPerfil(null, fileName, file.getContentType(), file.getBytes(), us);
+        ImagemPerfil image = new ImagemPerfil(null, fileName, file.getContentType(), file.getBytes(), timestamp, us);
 
         return imagemPerfilRepository.save(image);
     }

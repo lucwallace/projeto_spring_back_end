@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Entity
@@ -19,10 +20,11 @@ public class ImagemPerfil {
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private String nome;
+    private String name;
     private String type;
-    @Lob
+    @Column(columnDefinition="bytea")
     private byte[] imageData;
+    private Timestamp date_create;
 
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")

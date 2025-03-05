@@ -32,11 +32,29 @@ public class ImagemPerfilResource implements ImageUserOpenApiController {
             imagemPerfilService.upload(file, idUser);
 
             message = "Upload efetuado com sucesso";
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage(message));
 
         } catch (Exception e) {
             message = "Upload não efetuado";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(message));
+        }
+
+        //return ResponseEntity.ok(new ResponseMessage(message));
+    }
+
+    @RequestMapping(method=RequestMethod.PUT)
+    public ResponseEntity<ResponseMessage> uploadFileUpdate(@RequestParam("file") MultipartFile file, @RequestParam("id_user") Long idUser, @RequestParam("id_upload") Long idUpload){
+        String message = "";
+
+        try {
+            imagemPerfilService.upload(file, idUser);
+
+            message = "Update do Upload efetuado com sucesso";
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+        } catch (Exception e) {
+            message = "Update Upload não efetuado";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(message));
         }
 
         //return ResponseEntity.ok(new ResponseMessage(message));
@@ -52,7 +70,7 @@ public class ImagemPerfilResource implements ImageUserOpenApiController {
                     .toUriString();
 
             return new ImagemPerfilResponse(
-                    dbFile.getNome(),
+                    dbFile.getName(),
                     fileDownloadUri,
                     dbFile.getType(),
                     dbFile.getImageData().length);
@@ -66,7 +84,7 @@ public class ImagemPerfilResource implements ImageUserOpenApiController {
         ImagemPerfil imagemPerfil = imagemPerfilService.getImages(id);
 
         return ResponseEntity.ok()
-               .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagemPerfil.getNome() + "\"")
+               .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagemPerfil.getName() + "\"")
                .body(imagemPerfil.getImageData());
     }
 
@@ -75,7 +93,7 @@ public class ImagemPerfilResource implements ImageUserOpenApiController {
         ImagemPerfil imagemPerfil = imagemPerfilService.getImagesByIdUser(id);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagemPerfil.getNome() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagemPerfil.getName() + "\"")
                 .body(imagemPerfil.getImageData());
     }
 
