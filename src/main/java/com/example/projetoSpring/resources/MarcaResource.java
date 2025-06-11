@@ -2,17 +2,16 @@ package com.example.projetoSpring.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.example.projetoSpring.dto.ReturnResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.projetoSpring.domain.Marca;
@@ -28,40 +27,54 @@ public class MarcaResource {
 	@Autowired
 	private MarcaService service;
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id){
+	@GetMapping(value = "/findById/{id}")
+	public ResponseEntity<Marca> find(@PathVariable Integer id){
 		Marca obj = service.find(id);
-		return ResponseEntity.ok().body(obj);
+		return ResponseEntity.of(Optional.ofNullable(obj));
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody MarcaDto objDto) {
-		Marca obj = service.fromDTO(objDto);
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-			.path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+	@PostMapping(value = "/criarMarca")
+	public ResponseEntity<ReturnResponse> insert(@Valid @RequestBody MarcaDto objDto) {
+
+		Marca obj = service.insert(objDto);
+
+		ReturnResponse returnResponse = new ReturnResponse();
+		if (obj != null && obj.getId() != null) {
+			returnResponse.setMessaje("Marca cadastrada com sucesso.");
+			return ResponseEntity.status(HttpStatus.CREATED).body(returnResponse);
+		} else {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao fazer o cadastro da marca.");
+		}
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody MarcaDto objDto, @PathVariable Integer id){
-		Marca obj = service.fromDTO(objDto);
-		obj.setId(id);
-		obj = service.update(obj);
-		return ResponseEntity.noContent().build();
+	@PutMapping(value = "/modificarMarca/{id}")
+	public ResponseEntity<ReturnResponse> update(@Valid @RequestBody MarcaDto objDto, @PathVariable Integer id){
+		objDto.setId(id);
+		Marca obj = service.update(objDto);
+
+		ReturnResponse returnResponse = new ReturnResponse();
+		if (obj != null && obj.getId() != null) {
+			returnResponse.setMessaje("Marca alterada com sucesso.");
+			return ResponseEntity.status(HttpStatus.OK).body(returnResponse);
+		} else {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao fazer a alteração da marca.");
+		}
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	@DeleteMapping(value = "/deletaMarca/{id}")
 	public ResponseEntity<Marca> delete(@PathVariable Integer id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	@RequestMapping(method=RequestMethod.GET)
+
+	@GetMapping(value = "/findAll")
 	public ResponseEntity<List<MarcaDto>> findAll() {
-		List<Marca> list = service.findAll();
-		List<MarcaDto> listDto = list.stream().map(obj -> new MarcaDto(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
+		List<Marca> listMarca = service.findAll();
+		List<MarcaDto> listMarcaDto = listMarca.stream()
+				.map(MarcaDto::new)
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(listMarcaDto);
 	}
 	
 	@RequestMapping(value="/page", method=RequestMethod.GET)

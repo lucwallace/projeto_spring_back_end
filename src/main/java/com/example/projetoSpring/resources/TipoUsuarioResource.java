@@ -2,7 +2,6 @@ package com.example.projetoSpring.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.projetoSpring.domain.TipoCarro;
 import com.example.projetoSpring.domain.TipoUsuario;
-import com.example.projetoSpring.domain.Usuario;
-import com.example.projetoSpring.dto.UsuarioDto;
-import com.example.projetoSpring.service.TipoCarroService;
 import com.example.projetoSpring.service.TipoUsuarioService;
 
 @RestController

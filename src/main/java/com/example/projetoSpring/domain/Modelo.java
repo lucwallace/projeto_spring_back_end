@@ -5,21 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import jakarta.persistence.*;
 
 import com.example.projetoSpring.enums.TipoModeloEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Modelo implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -27,102 +26,24 @@ public class Modelo implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private Double preco;
-	private Integer idTipo;
-	
-	public Modelo() {}
+	private Double preco; //colocar no anuncio
+	private Integer idTipo; //Ainda vendo
 
-	public Modelo(Integer id, String nome, Double preco, TipoModeloEnum idTipo) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.preco = preco;
-		this.idTipo = idTipo.getCodigo();
-	}
-	
 	@JsonIgnore
-	@ManyToMany
-	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
-	@JoinTable(name = "Marca_Modelo", joinColumns = @JoinColumn(name = "modelo_id"),
-	inverseJoinColumns = @JoinColumn(name = "marca_id"))
-	
-	private List<Marca> marcas = new ArrayList<>(); 
-	
-	@ManyToMany(mappedBy = "modelos")
-	private List<TipoCarro> tipoCarros = new ArrayList<>();
-	
-	public Integer getId() {
-		return id;
-	}
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JoinTable(
+			name = "Marca_Modelo",
+			joinColumns = @JoinColumn(name = "modelo_id"),
+			inverseJoinColumns = @JoinColumn(name = "marca_id")
+	)
+	private List<Marca> marcas = new ArrayList<>();
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@OneToMany(mappedBy = "modelo", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JsonIgnore
+	private List<Versao> versoes = new ArrayList<>();
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public Double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
-
-	public List<Marca> getMarcas() {
-		return marcas;
-	}
-
-	public void setMarcas(List<Marca> marcas) {
-		this.marcas = marcas;
-	}
-	
-	public List<TipoCarro> getTipoCarros() {
-		return tipoCarros;
-	}
-
-	public void setTipoCarros(List<TipoCarro> tipoCarros) {
-		this.tipoCarros = tipoCarros;
-	}
-
-	public TipoModeloEnum getIdTipo() {
-		return TipoModeloEnum.toEnum(idTipo);
-	}
-
-	public void setIdTipo(TipoModeloEnum idTipo) {
-		this.idTipo = idTipo.getCodigo();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Modelo other = (Modelo) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome) && Objects.equals(preco, other.preco) && Objects.equals(idTipo, other.idTipo);
-	}
-	
-	
-	
-	
-	
-	
+	@OneToMany(mappedBy = "modelosTipo", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JsonIgnore
+	private List<TipoModelo> tipoModelos = new ArrayList<>();
 
 }

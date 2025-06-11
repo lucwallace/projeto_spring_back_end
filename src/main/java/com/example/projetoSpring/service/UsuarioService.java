@@ -1,107 +1,136 @@
 package com.example.projetoSpring.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import com.example.projetoSpring.domain.ERole;
+import com.example.projetoSpring.domain.Role;
+import com.example.projetoSpring.domain.Usuario;
+import com.example.projetoSpring.dto.LoginRequestDTO;
+import com.example.projetoSpring.dto.RegistroUsuarioDTO;
+import com.example.projetoSpring.payload.request.LoginRequest;
+import com.example.projetoSpring.repositories.RoleRepository;
+import com.example.projetoSpring.repositories.UsuarioRepository;
+import com.example.projetoSpring.resources.UsuarioResource;
+import com.example.projetoSpring.utils.JwtUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.context.annotation.Lazy;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
-import com.example.projetoSpring.domain.Usuario;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+@Service
+public class UsuarioService implements UserDetailsService {
 
-public class UsuarioService implements UserDetails{
+    private static final Logger logger = LogManager.getLogger(UsuarioService.class);
 
-	 private static final long serialVersionUID = 1L;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-	  private Long id;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-	  private String username;
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
 
-	  private String email;
+    @Autowired
+    private RoleRepository roleRepository;
 
-	  @JsonIgnore
-	  private String password;
+    private final AuthenticationManager authenticationManager;
 
-	  private Collection<? extends GrantedAuthority> authorities;
+    // Injetando o AuthenticationManager com @Lazy para adiar sua resolução
+    @Autowired
+    public UsuarioService(@Lazy AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
-	  public UsuarioService(Long id, String username, String email, String password,
-	      Collection<? extends GrantedAuthority> authorities) {
-	    this.id = id;
-	    this.username = username;
-	    this.email = email;
-	    this.password = password;
-	    this.authorities = authorities;
-	  }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.info("### loadUserByUsername ###");
 
-	  public static UsuarioService build(Usuario user) {
-	    List<GrantedAuthority> authorities = user.getRoles().stream()
-	        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-	        .collect(Collectors.toList());
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-	    return new UsuarioService(
-	        user.getId(), 
-	        user.getUsername(), 
-	        user.getEmail(),
-	        user.getPassword(), 
-	        authorities);
-	  }
+        return new User(
+                usuario.getUsername(),
+                usuario.getPassword(),
+                usuario.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                        .collect(Collectors.toList())
+        );
+    }
 
-	  @Override
-	  public Collection<? extends GrantedAuthority> getAuthorities() {
-	    return authorities;
-	  }
+    public String loginUsuario(LoginRequestDTO loginRequestDTO) {
+        String token = "";
+        logger.info("### Iniciando as validações do login ###");
 
-	  public Long getId() {
-	    return id;
-	  }
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequestDTO.getUsername(),
+                            loginRequestDTO.getPassword()
+                    )
+            );
+            token = jwtUtil.generateToken(authentication.getName(), authentication.getAuthorities());
+        } catch (BadCredentialsException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário e senha incorretos");
+        } catch (Exception e) {
+            logger.error("### Error no loginUsuario ###");
+            logger.error("### " + e.getMessage() + " ###");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado ao autenticar usuário");
+        }
+        return token;
+    }
 
-	  public String getEmail() {
-	    return email;
-	  }
+    public Usuario registroUsuario(RegistroUsuarioDTO registroUsuarioDTO) {
+        logger.info("### Iniciando as validações do cadastro de usuário ###");
 
-	  @Override
-	  public String getPassword() {
-	    return password;
-	  }
+        Usuario usuario = new Usuario();
 
-	  @Override
-	  public String getUsername() {
-	    return username;
-	  }
+        if (registroUsuarioDTO.getUserName().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username não está preenchido.");
+        }
+        if (registroUsuarioDTO.getPassword().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A senha não está preenchida.");
+        }
+        if (registroUsuarioDTO.getEmail().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "E-mail não está preenchido.");
+        }
+        if (usuarioRepository.existsByUsername(registroUsuarioDTO.getUserName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username já existe.");
+        }
+        if (usuarioRepository.existsByEmail(registroUsuarioDTO.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já existe.");
+        }
 
-	  @Override
-	  public boolean isAccountNonExpired() {
-	    return true;
-	  }
+        usuario.setUsername(registroUsuarioDTO.getUserName());
+        usuario.setPassword(passwordEncoder.encode(registroUsuarioDTO.getPassword()));
 
-	  @Override
-	  public boolean isAccountNonLocked() {
-	    return true;
-	  }
+        Role role = roleRepository.findByName(ERole.USER)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ROLE " + ERole.USER + " não encontrada."));
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        usuario.setRoles(roles);
 
-	  @Override
-	  public boolean isCredentialsNonExpired() {
-	    return true;
-	  }
+        usuario.setEmail(registroUsuarioDTO.getEmail());
+        usuario.setDataCriacao(LocalDateTime.now());
 
-	  @Override
-	  public boolean isEnabled() {
-	    return true;
-	  }
-
-	  @Override
-	  public boolean equals(Object o) {
-	    if (this == o)
-	      return true;
-	    if (o == null || getClass() != o.getClass())
-	      return false;
-	    UsuarioService user = (UsuarioService) o;
-	    return Objects.equals(id, user.id);
-	  }
-
-
+        return usuarioRepository.save(usuario);
+    }
 }

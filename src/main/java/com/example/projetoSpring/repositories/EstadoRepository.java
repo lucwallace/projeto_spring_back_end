@@ -7,6 +7,6 @@ import com.example.projetoSpring.domain.Estado;
 
 @Repository
 public interface EstadoRepository extends JpaRepository<Estado, Integer>{
-	
 
+    boolean existsByNome(String nome);
 }

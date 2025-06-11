@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: APIs Públicas do Brasil
+  version: "1.0.0"
+  description: Documentação Swagger para APIs de CEP, municípios e distritos.
+
+paths:
+  /cep/v1/{cep}:
+    get:
+      summary: Buscar localidade por CEP
+      tags:
+        - BrasilAPI
+      servers:
+        - url: https://brasilapi.com.br/api
+          description: BrasilAPI
+      parameters:
+        - name: cep
+          in: path
+          required: true
+          description: Código postal no formato 01001000
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dados de localidade encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cep:
+                    type: string
+                  state:
+                    type: string
+                  city:
+                    type: string
+                  neighborhood:
+                    type: string
+                  street:
+                    type: string
+                  service:
+                    type: string
+        '400':
+          description: CEP inválido
+        '404':
+          description: CEP não encontrado
+
+  /localidades/municipios/{municipio}/distritos:
+    get:
+      summary: Buscar distritos por município
+      tags:
+        - IBGE
+      servers:
+        - url: https://servicodados.ibge.gov.br/api/v1
+          description: IBGE
+      parameters:
+        - name: municipio
+          in: path
+          required: true
+          description: Código IBGE do município
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de distritos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nome:
+                      type: string
+                    municipio:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        nome:
+                          type: string
+        '404':
+          description: Município não encontrado
+
+  /localidades/estados/{uf}/municipios:
+    get:
+      summary: Listar municípios de um estado
+      tags:
+        - IBGE
+      servers:
+        - url: https://servicodados.ibge.gov.br/api/v1
+          description: IBGE
+      parameters:
+        - name: uf
+          in: path
+          required: true
+          description: Sigla da unidade federativa
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de municípios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nome:
+                      type: string
+        '404':
+          description: Estado não encontrado

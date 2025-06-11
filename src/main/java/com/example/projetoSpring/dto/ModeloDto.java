@@ -30,7 +30,6 @@ public class ModeloDto implements Serializable{
 		id = obj.getId();
 		nome = obj.getNome();
 		preco = obj.getPreco();
-		tipoCarro = obj.getIdTipo().getDescricao();
 		
 	}
 

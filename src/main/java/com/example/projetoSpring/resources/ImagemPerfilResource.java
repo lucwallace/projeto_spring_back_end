@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class ImagemPerfilResource implements ImageUserOpenApiController {
 
         } catch (Exception e) {
             message = "Upload não efetuado";
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(message));
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message);
         }
 
         //return ResponseEntity.ok(new ResponseMessage(message));

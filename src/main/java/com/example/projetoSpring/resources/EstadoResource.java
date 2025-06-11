@@ -22,7 +22,7 @@ public class EstadoResource {
 	@Autowired
 	private EstadoService service;
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/public/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id){
 		Estado obj = service.find(id);
 		return ResponseEntity.ok().body(obj);

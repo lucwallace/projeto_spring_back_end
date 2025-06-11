@@ -36,6 +36,10 @@ public class ImagemPerfilService {
 
         Optional<Usuario> user = usuarioRepository.findById(idUser);
 
+        if (file.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Arquivo vazio");
+        }
+
         if(user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não existe");
         }
@@ -50,9 +54,15 @@ public class ImagemPerfilService {
         us.setPassword(user.get().getPassword());
         us.setRoles(user.get().getRoles());
 
-        ImagemPerfil image = new ImagemPerfil(null, fileName, file.getContentType(), file.getBytes(), timestamp, us);
+        ImagemPerfil imagem = new ImagemPerfil();
 
-        return imagemPerfilRepository.save(image);
+        imagem.setName(fileName);
+        imagem.setType(file.getContentType());
+        imagem.setImageData(file.getBytes());
+        imagem.setDate_create(timestamp);
+        imagem.setUser(us);
+
+        return imagemPerfilRepository.save(imagem);
     }
 
     public ImagemPerfil getImages(String id){

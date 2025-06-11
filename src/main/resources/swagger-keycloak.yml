@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Keycloak API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8089
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []  # Aplica o token em todos os endpoints por padrão
+
+paths:
+  /realms/master/protocol/openid-connect/token:
+    post:
+      summary: Obter token
+      security: []  # Desativa o token aqui, pois é o login
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                grant_type:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+              required: [client_id, client_secret, grant_type, username, password]
+      responses:
+        '200':
+          description: Token gerado com sucesso
+
+  /realms/master/protocol/openid-connect/logout:
+    post:
+      summary: Logout do usuário
+      description: Revoga o `refresh_token` e encerra a sessão do usuário.
+      security: []  # Também sem token aqui
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                refresh_token:
+                  type: string
+              required: [client_id, client_secret, refresh_token]
+      responses:
+        '204':
+          description: Logout bem-sucedido (sem conteúdo)
+        '400':
+          description: Requisição inválida
+        '401':
+          description: Não autorizado
+
+  /admin/realms/master/users:
+    post:
+      summary: Criar usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                enabled:
+                  type: boolean
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                credentials:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      value:
+                        type: string
+                      temporary:
+                        type: boolean
+      responses:
+        '201':
+          description: Usuário criado com sucesso

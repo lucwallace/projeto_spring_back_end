@@ -1,25 +1,18 @@
 package com.example.projetoSpring.service;
 
 import java.text.ParseException;
-import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.projetoSpring.domain.Cidade;
 import com.example.projetoSpring.domain.ERole;
-import com.example.projetoSpring.domain.Estado;
-import com.example.projetoSpring.domain.Marca;
-import com.example.projetoSpring.domain.Modelo;
 import com.example.projetoSpring.domain.Role;
-import com.example.projetoSpring.enums.TipoModeloEnum;
 import com.example.projetoSpring.repositories.CidadeRepository;
 import com.example.projetoSpring.repositories.EnderecoRepository;
 import com.example.projetoSpring.repositories.EstadoRepository;
 import com.example.projetoSpring.repositories.MarcaRepository;
 import com.example.projetoSpring.repositories.ModeloRepository;
 import com.example.projetoSpring.repositories.RoleRepository;
-import com.example.projetoSpring.repositories.TipoCarroRepository;
 import com.example.projetoSpring.repositories.UsuarioRepository;
 
 @Service
@@ -30,9 +23,6 @@ public class DBService {
 	
 	@Autowired
 	private ModeloRepository modeloRepository;
-	
-	@Autowired
-	private TipoCarroRepository tipoCarroRepository;
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
@@ -98,15 +88,18 @@ public class DBService {
 		
 		//e1.setUsuarios(cli1);
 
+		Role role1 = new Role(null, ERole.USER);
+		Role role2 = new Role(null, ERole.MODERATOR);
+		Role role3 = new Role(null, ERole.ADMIN);
 	
 		//marcaRepository.saveAll(Arrays.asList(mac1, mac2));
 		//modeloRepository.saveAll(Arrays.asList(m1, m2));
 		//tipoCarroRepository.saveAll(Arrays.asList(t1));
 		//estadoRepository.saveAll(Arrays.asList(est1, est2));
 		//cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
-		//roleRepository.save(role1);
-		//roleRepository.save(role2);
-		//roleRepository.save(role3);
+		roleRepository.save(role1);
+		roleRepository.save(role2);
+		roleRepository.save(role3);
 		//clienteRepository.saveAll(Arrays.asList(cli1));
 		//enderecoRepository.saveAll(Arrays.asList(e1, e2));
 		
