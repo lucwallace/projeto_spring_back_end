@@ -1,6 +1,10 @@
 package com.example.projetoSpring.service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -44,6 +48,7 @@ public class MarcaService {
         if (objComp == null) {
             String nomeMarca = marca.getNome().toUpperCase().trim();
             marca.setNome(nomeMarca);
+            marca.setDataCriacao(Timestamp.from(Instant.now()));
             return re.save(marca);
         } else {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "A Marca do veiculo '" + obj.getNome() + "' já existe.");
@@ -53,7 +58,19 @@ public class MarcaService {
 
     public Marca fromDTO(MarcaDto objDto) {
 
-        return new Marca(objDto.getId(), objDto.getNome(), null);
+        Marca marca = new Marca();
+
+        marca.setId(objDto.getId());
+        marca.setNome(objDto.getNome());
+
+        if (objDto.getId() != null) {
+            Optional<Marca> marcaData = re.findById(objDto.getId());
+            marcaData.ifPresent(existing ->
+                    marca.setDataCriacao(existing.getDataCriacao())
+            );
+        }
+
+        return marca;
     }
 
     public Marca update(MarcaDto obj) {
@@ -64,11 +81,18 @@ public class MarcaService {
 
         boolean existsByIdMarca = re.existsById(obj.getId());
 
+        Marca objComp = re.findByNome(obj.getNome().toUpperCase().trim());
+
+        if (objComp != null && !Objects.equals(obj.getId(), objComp.getId()) && obj.getNome().equalsIgnoreCase(objComp.getNome())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "A Marca do veiculo '" + obj.getNome() + "' já existe.");
+        }
+
         Marca marca = fromDTO(obj);
 
         if (existsByIdMarca) {
             String nomeMarca = marca.getNome().toUpperCase().trim();
             marca.setNome(nomeMarca);
+            marca.setDataAlteracao(Timestamp.from(Instant.now()));
             return re.save(marca);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Marca de veículo não existe");

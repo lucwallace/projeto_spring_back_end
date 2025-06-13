@@ -1,6 +1,7 @@
 package com.example.projetoSpring.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,8 @@ public class Marca implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private Timestamp dataCriacao;
+	private Timestamp dataAlteracao;
 
 	@ManyToMany(mappedBy = "marcas")
 	@Cascade({ CascadeType.MERGE, CascadeType.PERSIST})
