@@ -1,18 +1,15 @@
 package com.example.projetoSpring.resources;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.example.projetoSpring.dto.ReturnResponse;
+import com.example.projetoSpring.records.MarcaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.projetoSpring.domain.Marca;
 import com.example.projetoSpring.dto.MarcaDto;
@@ -28,9 +25,16 @@ public class MarcaResource {
 	private MarcaService service;
 	
 	@GetMapping(value = "/findById/{id}")
-	public ResponseEntity<Marca> find(@PathVariable Integer id){
+	public ResponseEntity<MarcaResponseDTO> find(@PathVariable Integer id){
 		Marca obj = service.find(id);
-		return ResponseEntity.of(Optional.ofNullable(obj));
+
+		if (obj == null) {
+			return ResponseEntity.notFound().build();
+		}
+
+		MarcaResponseDTO dto = new MarcaResponseDTO(obj.getId(), obj.getNome());
+
+		return ResponseEntity.ok(dto);
 	}
 	
 	@PostMapping(value = "/criarMarca")
@@ -68,13 +72,14 @@ public class MarcaResource {
 	}
 
 	@GetMapping(value = "/findAll")
-	public ResponseEntity<List<MarcaDto>> findAll() {
+	public ResponseEntity<List<MarcaResponseDTO>> findAll() {
 		List<Marca> listMarca = service.findAll();
-		List<MarcaDto> listMarcaDto = listMarca.stream()
-				.map(MarcaDto::new)
-				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(listMarcaDto);
+		List<MarcaResponseDTO> listMarcaResponseDto = listMarca.stream()
+				.map(MarcaResponseDTO::new)
+				.toList();
+
+		return ResponseEntity.ok(listMarcaResponseDto);
 	}
 	
 	@RequestMapping(value="/page", method=RequestMethod.GET)

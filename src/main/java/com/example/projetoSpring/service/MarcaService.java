@@ -110,7 +110,7 @@ public class MarcaService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Marca de veículo não existe");
             }
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Não é possivel excluir modelo.");
+            throw new DataIntegrityViolationException("Não é possivel excluir marca.");
         }
     }
 

@@ -29,14 +29,9 @@ public class Modelo implements Serializable{
 	private Double preco; //colocar no anuncio
 	private Integer idTipo; //Ainda vendo
 
-	@JsonIgnore
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@JoinTable(
-			name = "Marca_Modelo",
-			joinColumns = @JoinColumn(name = "modelo_id"),
-			inverseJoinColumns = @JoinColumn(name = "marca_id")
-	)
-	private List<Marca> marcas = new ArrayList<>();
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JoinColumn(name = "marca_id")
+	private Marca marca;
 
 	@OneToMany(mappedBy = "modelo", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JsonIgnore

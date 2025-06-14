@@ -1,0 +1,323 @@
+openapi: 3.0.1
+info:
+  title: Viper Cars API
+  description: API REST para o projeto Viper Cars.
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:8081
+    description: Servidor local de desenvolvimento
+
+tags:
+  - name: Marca
+    description: Endpoints relacionados à entidade Marca
+  - name: Tipo Modelo
+    description: Endpoints relacionados à entidade Tipo Modelo
+
+paths:
+  /marcas/criarMarca:
+    post:
+      tags:
+        - Marca
+      summary: Criar nova marca
+      description: Cria uma nova marca de veículo e a armazena no banco de dados.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Dados da nova marca
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarcaRequest'
+            example:
+              nome: TESLA
+      responses:
+        '201':
+          description: Marca criada com sucesso.
+        '400':
+          description: Requisição inválida - verifique os dados enviados.
+        '401':
+          description: Não autorizado - token ausente ou inválido.
+        '403':
+          description: Acesso proibido - você não tem permissão para esta ação.
+        '409':
+          description: Conflito - a marca já está cadastrada.
+
+  /marcas/findById/{id}:
+    get:
+      tags:
+        - Marca
+      summary: Buscar marca por ID
+      description: Retorna os dados de uma marca existente com base no ID fornecido.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da marca a ser consultada
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Marca encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarcaResponse'
+        '404':
+          description: Marca não encontrada.
+
+  /marcas/findAll:
+    get:
+      tags:
+        - Marca
+      summary: Listar todas as marcas
+      description: Retorna uma lista com todas as marcas cadastradas.
+      responses:
+        '200':
+          description: Lista de marcas retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarcaResponse'
+
+  /marcas/modificarMarca/{id}:
+    put:
+      tags:
+        - Marca
+      summary: Atualizar marca
+      description: Atualiza os dados de uma marca existente com base no ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da marca a ser atualizada
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Novos dados da marca
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarcaRequest'
+            example:
+              nome: TESLA
+      responses:
+        '200':
+          description: Marca atualizada com sucesso.
+        '400':
+          description: Dados inválidos.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Acesso proibido.
+        '409':
+          description: Conflito - já existe uma marca com esse nome.
+
+  /marcas/deletaMarca/{id}:
+    delete:
+      tags:
+        - Marca
+      summary: Deletar marca
+      description: Exclui uma marca do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da marca a ser deletada
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Marca deletada com sucesso.
+        '404':
+          description: Marca não encontrada.
+
+  /tiposModelos/criarTipoModelo:
+    post:
+      tags:
+        - Tipo Modelo
+      summary: Criar novo tipo de modelo
+      description: Cria um novo tipo de modelo do veículo e a armazena no banco de dados.
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        description: Dados do novo tipo de modelo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoModelosRequest'
+            example:
+              nome: HATCH
+      responses:
+        '201':
+          description: Tipo de modelo criado com sucesso.
+        '400':
+          description: Requisição inválida - verifique os dados enviados.
+        '401':
+          description: Não autorizado - token ausente ou inválido.
+        '403':
+          description: Acesso proibido - você não tem permissão para esta ação.
+        '409':
+          description: Conflito - Tipo de modelo já está cadastrado.
+
+  /tiposModelos/findById/{id}:
+    get:
+      tags:
+        - Tipo Modelo
+      summary: Buscar tipo modelo por ID
+      description: Retorna os dados de um tipo de modelo existente com base no ID fornecido.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do tipo modelo a ser consultado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Tipo modelo encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoModelosResponse'
+        '404':
+          description: Tipo modelo não encontrado.
+
+  /tiposModelos/findAll:
+    get:
+      tags:
+        - Tipo Modelo
+      summary: Listar todos os tipos de modelos
+      description: Retorna uma lista com todos os tipos modelos cadastrados.
+      responses:
+        '200':
+          description: Lista de tipo de modelos retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoModelosResponse'
+
+  /tiposModelos/modificarTipoModelo/{id}:
+    put:
+      tags:
+        - Tipo Modelo
+      summary: Atualizar o tipo de modelo
+      description: Atualiza os dados de um tipo de modelo existente com base no ID.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do tipo de modelo a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Novos dados do tipo de modelo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoModelosRequest'
+            example:
+              nome: HATCH
+      responses:
+        '200':
+          description: Tipo de modelo atualizado com sucesso.
+        '400':
+          description: Dados inválidos.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Acesso proibido.
+        '409':
+          description: Conflito - já existe um tipo de modelo com esse nome.
+
+  /tiposModelos/deleteTipoModelo/{id}:
+    delete:
+      tags:
+        - Tipo Modelo
+      summary: Deletar tipo de modelo
+      description: Exclui um tipo de modelo do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do tipo de modelo a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Tipo modelo deletado com sucesso.
+        '404':
+          description: Tipo de modelo não encontrado.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    MarcaRequest:
+      type: object
+      required:
+        - nome
+      properties:
+        nome:
+          type: string
+          description: Nome da marca
+          example: TESLA
+
+    MarcaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da marca
+          example: 1
+        nome:
+          type: string
+          description: Nome da marca
+          example: TESLA
+
+    TipoModelosRequest:
+      type: object
+      required:
+        - nome
+      properties:
+        nome:
+          type: string
+          description: Nome da marca
+          example: HATCH
+
+    TipoModelosResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da marca
+          example: 1
+        nome:
+          type: string
+          description: Nome da marca
+          example: HATCH

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class TipoModelo {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private Timestamp dataCriacao;
+    private Timestamp dataAlteracao;
 
     @JsonIgnore
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
