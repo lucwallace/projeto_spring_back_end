@@ -41,7 +41,7 @@ public class MarcaService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome da marca não preenchido.");
         }
 
-        Marca objComp = re.findByNome(obj.getNome().trim());
+        Marca objComp = re.findByNome(obj.getNome().toUpperCase().trim());
 
         Marca marca = fromDTO(obj);
 

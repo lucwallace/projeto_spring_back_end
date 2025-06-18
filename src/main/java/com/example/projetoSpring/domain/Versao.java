@@ -28,6 +28,6 @@ public class Versao implements Serializable {
     private String nome;
 
     @ManyToOne
-    @JoinColumn(name = "modelo_id")
+    @JoinColumn(name = "modelo_id", nullable = false)
     private Modelo modelo;
 }

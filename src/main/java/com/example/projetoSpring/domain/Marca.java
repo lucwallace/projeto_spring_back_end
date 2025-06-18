@@ -28,7 +28,7 @@ public class Marca implements Serializable{
 	private Timestamp dataCriacao;
 	private Timestamp dataAlteracao;
 
-	@OneToMany(mappedBy = "marca", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(mappedBy = "marca", cascade = {CascadeType.MERGE})
 	private List<Modelo> modelos = new ArrayList<>();
 
 }

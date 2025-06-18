@@ -26,7 +26,7 @@ public class TipoModelo {
     private Timestamp dataAlteracao;
 
     @JsonIgnore
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "Modelo_TipoModelo",
             joinColumns = @JoinColumn(name = "tipo_id"),

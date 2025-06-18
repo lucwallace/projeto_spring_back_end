@@ -33,7 +33,7 @@ public class TipoModeloService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome do tipo do modelo não preenchido.");
         }
 
-        TipoModelo objComp = re.findByNome(obj.getNome().trim());
+        TipoModelo objComp = re.findByNome(obj.getNome().toUpperCase().trim());
 
         TipoModelo tipoModelo = fromDTO(obj);
 

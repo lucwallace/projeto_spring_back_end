@@ -21,10 +21,12 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	private static final String[] PUBLIC = { "/marcas/findById/**", "/marcas/findAll", "/tiposModelos/findById/**", "/tiposModelos/findAll"  };
+	private static final String[] PUBLIC = { "/marcas/findById/**", "/marcas/findAll", "/tiposModelos/findById/**", "/tiposModelos/findAll",
+	"/modelos/findById/**", "/modelos/findAll"};
 	private static final String[] AUTHENTICATED = { "" };
 	private static final String[] AUTHENTICATED_ADMIN = { "/marcas/criarMarca", "/marcas/modificarMarca/**", "/marcas/deletaMarca/**",
-	"/tiposModelos/criarTipoModelo", "/tiposModelos/modificarTipoModelo/**", "/tiposModelos/deleteTipoModelo/**"};
+	"/tiposModelos/criarTipoModelo", "/tiposModelos/modificarTipoModelo/**", "/tiposModelos/deleteTipoModelo/**",
+	"/modelos/criarModelo", "/modelos/modificarModelo/**", "/modelos/deletaModelo/**"};
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

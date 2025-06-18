@@ -1,6 +1,7 @@
 package com.example.projetoSpring.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,16 +29,18 @@ public class Modelo implements Serializable{
 	private String nome;
 	private Double preco; //colocar no anuncio
 	private Integer idTipo; //Ainda vendo
+	private Timestamp dataCriacao;
+	private Timestamp dataAlteracao;
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "marca_id")
 	private Marca marca;
 
-	@OneToMany(mappedBy = "modelo", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@OneToMany(mappedBy = "modelo", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<Versao> versoes = new ArrayList<>();
 
-	@OneToMany(mappedBy = "modelosTipo", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@ManyToMany(mappedBy = "modelosTipo")
 	@JsonIgnore
 	private List<TipoModelo> tipoModelos = new ArrayList<>();
 
