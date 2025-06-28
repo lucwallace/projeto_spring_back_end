@@ -22,11 +22,11 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class SecurityConfig {
 
 	private static final String[] PUBLIC = { "/marcas/findById/**", "/marcas/findAll", "/tiposModelos/findById/**", "/tiposModelos/findAll",
-	"/modelos/findById/**", "/modelos/findAll"};
-	private static final String[] AUTHENTICATED = { "" };
+			"/modelos/findById/**", "/modelos/findAll", "/opcional/findById/**", "/opcional/findAll", "/anuncio/findById/**", "/anuncio/findByStatus/**", "/anuncio/findAll"};
+	private static final String[] AUTHENTICATED = {"/anuncio/criarAnuncio", "/anuncio/modificarAnuncio/**", "/anuncio/deleteAnuncio/**", "/imagensAnuncio/upload", "/imagensAnuncio/deleteImagensAnuncio/**"};
 	private static final String[] AUTHENTICATED_ADMIN = { "/marcas/criarMarca", "/marcas/modificarMarca/**", "/marcas/deletaMarca/**",
 	"/tiposModelos/criarTipoModelo", "/tiposModelos/modificarTipoModelo/**", "/tiposModelos/deleteTipoModelo/**",
-	"/modelos/criarModelo", "/modelos/modificarModelo/**", "/modelos/deletaModelo/**"};
+			"/modelos/criarModelo", "/modelos/modificarModelo/**", "/modelos/deletaModelo/**", "/opcional/criarOpcional", "/opcional/modificarOpcional/**", "/opcional/deleteOpcional/**"};
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -27,8 +27,6 @@ public class Modelo implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private Double preco; //colocar no anuncio
-	private Integer idTipo; //Ainda vendo
 	private Timestamp dataCriacao;
 	private Timestamp dataAlteracao;
 
@@ -43,5 +41,9 @@ public class Modelo implements Serializable{
 	@ManyToMany(mappedBy = "modelosTipo")
 	@JsonIgnore
 	private List<TipoModelo> tipoModelos = new ArrayList<>();
+
+	@OneToMany(mappedBy = "modelo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JsonIgnore
+	private List<Anuncio> anuncios = new ArrayList<>();
 
 }

@@ -1,6 +1,5 @@
 package com.example.projetoSpring.records;
 
-import com.example.projetoSpring.domain.Marca;
 import com.example.projetoSpring.domain.TipoModelo;
 
 public record TipoModeloResponseDTO(Integer id, String nome) {

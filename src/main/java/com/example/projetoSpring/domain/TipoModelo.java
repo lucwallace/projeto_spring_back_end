@@ -34,4 +34,8 @@ public class TipoModelo {
     )
     private List<Modelo> modelosTipo = new ArrayList<>();
 
+    @OneToMany(mappedBy = "tipoModelos", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Anuncio> anuncios = new ArrayList<>();
+
 }

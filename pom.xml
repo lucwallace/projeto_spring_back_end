@@ -157,6 +157,12 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId> <!-- Ou use cloudinary-core -->
+			<version>1.34.0</version> <!-- ou a versão mais recente -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

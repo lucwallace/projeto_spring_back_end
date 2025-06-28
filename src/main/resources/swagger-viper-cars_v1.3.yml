@@ -1,0 +1,993 @@
+openapi: 3.0.1
+info:
+  title: Viper Cars API
+  description: API REST para o projeto Viper Cars.
+  version: 1.0.3
+
+servers:
+  - url: http://localhost:8081
+    description: Servidor local de desenvolvimento
+
+tags:
+  - name: Marca
+    description: Endpoints relacionados à entidade Marca
+  - name: Tipo Modelo
+    description: Endpoints relacionados à entidade Tipo Modelo
+  - name: Modelo
+    description: Endpoints relacionados à entidade Modelo
+  - name: Opcional
+    description: Endpoints relacionados à entidade Opcional
+  - name: Anúncio
+    description: Endpoints relacionados à entidade Anúncio
+  - name: Imagens do Anúncio
+    description: Endpoints relacionados à entidade da imagens do Anúncio
+
+paths:
+  /marcas/criarMarca:
+    post:
+      tags:
+        - Marca
+      summary: Criar nova marca
+      description: Cria uma nova marca de veículo e a armazena no banco de dados.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Dados da nova marca
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarcaRequest'
+      responses:
+        '201':
+          description: Marca criada com sucesso.
+        '400':
+          description: Requisição inválida - verifique os dados enviados.
+        '401':
+          description: Não autorizado - token ausente ou inválido.
+        '403':
+          description: Acesso proibido - você não tem permissão para esta ação.
+        '409':
+          description: Conflito - a marca já está cadastrada.
+
+  /marcas/findById/{id}:
+    get:
+      tags:
+        - Marca
+      summary: Buscar marca por ID
+      description: Retorna os dados de uma marca existente com base no ID fornecido.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da marca a ser consultada
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Marca encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarcaResponse'
+        '404':
+          description: Marca não encontrada.
+
+  /marcas/findAll:
+    get:
+      tags:
+        - Marca
+      summary: Listar todas as marcas
+      description: Retorna uma lista com todas as marcas cadastradas.
+      responses:
+        '200':
+          description: Lista de marcas retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarcaResponse'
+
+  /marcas/modificarMarca/{id}:
+    put:
+      tags:
+        - Marca
+      summary: Atualizar marca
+      description: Atualiza os dados de uma marca existente com base no ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da marca a ser atualizada
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Novos dados da marca
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarcaRequest'
+      responses:
+        '200':
+          description: Marca atualizada com sucesso.
+        '400':
+          description: Dados inválidos.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Acesso proibido.
+        '409':
+          description: Conflito - já existe uma marca com esse nome.
+
+  /marcas/deletaMarca/{id}:
+    delete:
+      tags:
+        - Marca
+      summary: Deletar marca
+      description: Exclui uma marca do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da marca a ser deletada
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Marca deletada com sucesso.
+        '404':
+          description: Marca não encontrada.
+
+  /tiposModelos/criarTipoModelo:
+    post:
+      tags:
+        - Tipo Modelo
+      summary: Criar novo tipo de modelo
+      description: Cria um novo tipo de modelo do veículo e a armazena no banco de dados.
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        description: Dados do novo tipo de modelo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoModelosRequest'
+      responses:
+        '201':
+          description: Tipo de modelo criado com sucesso.
+        '400':
+          description: Requisição inválida - verifique os dados enviados.
+        '401':
+          description: Não autorizado - token ausente ou inválido.
+        '403':
+          description: Acesso proibido - você não tem permissão para esta ação.
+        '409':
+          description: Conflito - Tipo de modelo já está cadastrado.
+
+  /tiposModelos/findById/{id}:
+    get:
+      tags:
+        - Tipo Modelo
+      summary: Buscar tipo modelo por ID
+      description: Retorna os dados de um tipo de modelo existente com base no ID fornecido.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do tipo modelo a ser consultado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Tipo modelo encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoModelosResponse'
+        '404':
+          description: Tipo modelo não encontrado.
+
+  /tiposModelos/findAll:
+    get:
+      tags:
+        - Tipo Modelo
+      summary: Listar todos os tipos de modelos
+      description: Retorna uma lista com todos os tipos modelos cadastrados.
+      responses:
+        '200':
+          description: Lista de tipo de modelos retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoModelosResponse'
+
+  /tiposModelos/modificarTipoModelo/{id}:
+    put:
+      tags:
+        - Tipo Modelo
+      summary: Atualizar o tipo de modelo
+      description: Atualiza os dados de um tipo de modelo existente com base no ID.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do tipo de modelo a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Novos dados do tipo de modelo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoModelosRequest'
+      responses:
+        '200':
+          description: Tipo de modelo atualizado com sucesso.
+        '400':
+          description: Dados inválidos.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Acesso proibido.
+        '409':
+          description: Conflito - já existe um tipo de modelo com esse nome.
+
+  /tiposModelos/deleteTipoModelo/{id}:
+    delete:
+      tags:
+        - Tipo Modelo
+      summary: Deletar tipo de modelo
+      description: Exclui um tipo de modelo do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do tipo de modelo a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Tipo modelo deletado com sucesso.
+        '404':
+          description: Tipo de modelo não encontrado.
+
+  /modelos/criarModelo:
+    post:
+      tags:
+        - Modelo
+      summary: Criar um novo modelo
+      description: Cria um novo modelo do veículo e a armazena no banco de dados.
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        description: Dados do novo modelo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModeloRequest'
+      responses:
+        '201':
+          description: Modelo criado com sucesso.
+        '400':
+          description: Requisição inválida - verifique os dados enviados.
+        '401':
+          description: Não autorizado - token ausente ou inválido.
+        '403':
+          description: Acesso proibido - você não tem permissão para esta ação.
+        '409':
+          description: Conflito - Tipo de modelo já está cadastrado.
+          
+  /modelos/findById/{id}:
+    get:
+      tags:
+        - Modelo
+      summary: Buscar modelo por ID
+      description: Retorna os dados de um modelo existente com base no ID fornecido.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do modelo a ser consultado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Modelo encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModeloResponse'
+        '404':
+          description: Tipo modelo não encontrado.
+
+  /modelos/findAll:
+    get:
+      tags:
+        - Modelo
+      summary: Listar todos os modelos
+      description: Retorna uma lista com todos os modelos cadastrados.
+      responses:
+        '200':
+          description: Lista de modelos retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModeloResponse'
+
+  /modelos/modificarModelo/{id}:
+    put:
+      tags:
+        - Modelo
+      summary: Atualizar o modelo
+      description: Atualiza os dados de um modelo existente com base no ID.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do modelo a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Novos dados do modelo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModeloRequest'
+      responses:
+        '200':
+          description: Modelo atualizado com sucesso.
+        '400':
+          description: Dados inválidos.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Acesso proibido.
+        '409':
+          description: Conflito - já existe um modelo com esse nome.
+
+  /modelos/deletaModelo/{id}:
+    delete:
+      tags:
+        - Modelo
+      summary: Deletar o modelo
+      description: Exclui um modelo do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do modelo a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Modelo deletado com sucesso.
+        '404':
+          description: Modelo não encontrado.
+
+  /opcional/criarOpcional:
+    post:
+      tags:
+        - Opcional
+      summary: Criar um novo opcional
+      description: Cria um novo opcional do veículo e a armazena no banco de dados.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Dados de um novo opcional
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpcionalRequest'
+      responses:
+        '201':
+          description: Opcional criado com sucesso.
+        '400':
+          description: Requisição inválida - verifique os dados enviados.
+        '401':
+          description: Não autorizado - token ausente ou inválido.
+        '403':
+          description: Acesso proibido - você não tem permissão para esta ação.
+        '409':
+          description: Conflito - Opcional já está cadastrado.
+
+  /opcional/findById/{id}:
+    get:
+      tags:
+        - Opcional
+      summary: Buscar opcional por ID
+      description: Retorna os dados de um opcional existente com base no ID fornecido.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do opcional a ser consultada
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Opcional encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionalResponse'
+        '404':
+          description: Opcional não encontrada.
+
+  /opcional/findAll:
+    get:
+      tags:
+        - Opcional
+      summary: Listar todos os opcionais
+      description: Retorna uma lista com todos os opcionais cadastrados.
+      responses:
+        '200':
+          description: Lista de opcionais retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OpcionalResponse'
+
+  /opcional/modificarOpcional/{id}:
+    put:
+      tags:
+        - Opcional
+      summary: Atualizar o opcional
+      description: Atualiza os dados de um opcional existente com base no ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da marca a ser atualizada
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Novos dados do opcional
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpcionalRequest'
+      responses:
+        '200':
+          description: Opcional atualizado com sucesso.
+        '400':
+          description: Dados inválidos.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Acesso proibido.
+        '409':
+          description: Conflito - já existe um opcional com esse nome.
+
+  /opcional/deleteOpcional/{id}:
+    delete:
+      tags:
+        - Opcional
+      summary: Deletar o opcional
+      description: Exclui um opcional do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do opcional a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Opcional deletado com sucesso.
+        '404':
+          description: Opcional não encontrada.
+
+  /anuncio/criarAnuncio:
+    post:
+      tags:
+        - Anúncio
+      summary: Criar um novo anúncio
+      description: Cria um novo anúncio do veículo e a armazena no banco de dados.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Dados de um novo anúncio
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnuncioRequest'
+      responses:
+        '201':
+          description: Anúncio criado com sucesso.
+        '400':
+          description: Requisição inválida - verifique os dados enviados.
+        '401':
+          description: Não autorizado - token ausente ou inválido.
+        '403':
+          description: Acesso proibido - você não tem permissão para esta ação.
+
+  /anuncio/findById/{id}:
+    get:
+      tags:
+        - Anúncio
+      summary: Buscar o anúncio por ID
+      description: Retorna os dados de um anúncio existente com base no ID fornecido.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do anúncio a ser consultado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Anúncio encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnuncioResponse'
+        '404':
+          description: Anúncio não encontrado.
+
+  /anuncio/findByStatus/{status}:
+    get:
+      tags:
+        - Anúncio
+      summary: Buscar o anúncio por status
+      description: Retorna os dados de um anúncio existente com base no status do anúncio fornecido.
+      parameters:
+        - name: status
+          in: path
+          required: true
+          description: Status do anúncio a ser consultado
+          schema:
+            type: string
+            example: ATIVO
+      responses:
+        '200':
+          description: Anúncio encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnuncioResponse'
+        '404':
+          description: Anúncio não encontrado.
+
+  /anuncio/findAll:
+    get:
+      tags:
+        - Anúncio
+      summary: Listar todos os anúncios
+      description: Retorna uma lista com todos os anúncios cadastrados.
+      responses:
+        '200':
+          description: Lista de anúncios retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnuncioResponse'
+
+  /anuncio/modificarAnuncio/{id}:
+    put:
+      tags:
+        - Anúncio
+      summary: Atualizar o anúncio
+      description: Atualiza os dados de um anúncio existente com base no ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do anúncio a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Novos dados do anúncio
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnuncioRequest'
+      responses:
+        '200':
+          description: Anúncio atualizado com sucesso.
+        '400':
+          description: Dados inválidos.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Acesso proibido.
+
+  /anuncio/deleteAnuncio/{id}:
+    delete:
+      tags:
+        - Anúncio
+      summary: Deletar o anúncio
+      description: Exclui um anúncio do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do anúncio a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Anúncio deletado com sucesso.
+        '404':
+          description: Anúncio não encontrado.
+
+  /imagensAnuncio/upload:
+    post:
+      summary: Upload múltiplo de imagens para um anúncio
+      operationId: uploadImagens
+      tags:
+        - Imagens do Anúncio
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Lista de arquivos de imagem
+                idAnuncio:
+                  type: integer
+                  description: ID do anúncio para vincular as imagens
+              required:
+                - files
+                - idAnuncio
+      responses:
+        '200':
+          description: Imagens enviadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImagensAnuncioResponse'
+        '400':
+          description: Erro de validação ou imagem excedendo o limite permitido
+        '404':
+          description: Anúncio não encontrado
+        '500':
+          description: Erro interno no servidor
+
+  /imagensAnuncio/deleteImagensAnuncio/{id}:
+    delete:
+      tags:
+        - Imagens do Anúncio
+      summary: Deletar as imagens do anúncio
+      description: Exclui as imagens do anúncio do banco de dados com base no ID fornecido.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do anúncio a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Imagens deletada com sucesso.
+        '404':
+          description: Anúncio não encontrado.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    MarcaRequest:
+      type: object
+      required:
+        - nome
+      properties:
+        nome:
+          type: string
+          description: Nome da marca
+          example: TESLA
+
+    MarcaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da marca
+          example: 1
+        nome:
+          type: string
+          description: Nome da marca
+          example: TESLA
+
+    TipoModelosRequest:
+      type: object
+      required:
+        - nome
+      properties:
+        nome:
+          type: string
+          description: Nome da marca
+          example: HATCH
+
+    TipoModelosResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da marca
+          example: 1
+        nome:
+          type: string
+          description: Nome da marca
+          example: HATCH
+    
+    VersaoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da versão
+          example: 1
+        nome:
+          type: string
+          description: Nome da versão
+          example: ASTRA S.SPORT 2.0 F.POW. 5P/SPORT 2.0 3P
+
+    ModeloRequest:
+      type: object
+      required:
+        - nome
+        - idMarca
+        - nomeVersao
+        - idsTipoModelo
+      properties:
+        nome:
+          type: string
+          example: "ASTRA"
+        idMarca:
+          type: integer
+          example: 1
+        nomeVersao:
+          type: string
+          example: "Astra S.Sport 2.0 F.Pow. 5p/Sport 2.0 3p, Astra Elite 2.0 MPFI Flex Pow. 8V 5p Aut"
+        idsTipoModelo:
+          type: array
+          items:
+            type: integer
+          example: [1, 2]
+
+    ModeloResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do modelo
+          example: 1
+        nomeMarca:
+          type: string
+          description: Nome da marca
+          example: CHEVROLET
+        nome:
+          type: string
+          description: Nome do modelo
+          example: CORSA
+        versoes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VersaoResponse'
+        tipoModelos:
+          type: array
+          $ref:  '#/components/schemas/TipoModelosResponse'
+  
+    OpcionalRequest:
+      type: object
+      required:
+        - nome
+      properties:
+        nome:
+          type: string
+          description: Nome do opcional
+          example: AR CONDICIONADO
+
+    OpcionalResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do opcional
+          example: 1
+        nome:
+          type: string
+          description: Nome do opcional
+          example: AR CONDICIONADO
+
+    AnuncioRequest:
+      type: object
+      required:
+        - preco
+        - status
+        - idsOpcionais
+        - idModelo
+        - idVersao
+        - idTipoModelo
+      properties:
+        preco:
+          type: number
+          example: 23,000,00
+        status:
+          type: string
+          example: ATIVO
+        descricao:
+          type: string
+          example: Descrição do veículo
+        idsOpcionais:
+          type: array
+          items:
+            type: integer
+          example: [1, 2]
+        idModelo:
+          type: integer
+          example: 1
+        idVersao:
+          type: integer
+          example: 1
+        idTipoModelo:
+          type: integer
+          example: 1
+
+    AnuncioResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do anúncio
+          example: 1
+        preco:
+          type: number
+          description: Preço do veículo
+          example: 23,000,00
+        status:
+          type: string
+          description: Status do anúncio
+          example: ATIVO
+        descricao:
+          type: string
+          example: Descrição do veículo
+        listaOpcionais:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpcionalResponse'
+        listaImagensAnuncios:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImagensAnuncioResponse'
+        modelo:
+          type: object
+          $ref: '#/components/schemas/ModeloAnuncioResponse'
+        versao:
+          type: object
+          $ref: '#/components/schemas/VersaoResponse'
+        tipoModelos:
+          type: object
+          $ref: '#/components/schemas/TipoModelosResponse'
+        Anunciante:
+          type: object
+          $ref: '#/components/schemas/AnuncianteResponse'
+    
+    ImagensAnuncioResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da imagem do anúncio
+          example: 1
+        url:
+          type: string
+          description: Url da imagem
+          example: http://res.cloudinary.com/<cloud_name>/image/upload/v1729473812/usuario123-folder/foto_carro_001.jpg
+        publicId:
+          type: string
+          description: Public id da imagem do anúncio
+          example: usuario123-folder/foto_carro_001
+        pasta:
+          type: string
+          description: A pasta da imagem
+          example: usuario123-folder
+
+    AnuncianteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do usuário
+          example: 1
+        uuid_usuario:
+          type: string
+          description: Identificação do usuário do keycloak
+          example: 000000-000000-000000-00000000
+        username:
+          type: string
+          description: Nome de usuário
+          example: lucas
+        cep:
+          type: string
+          description: CEP do anunciante
+          example: 00000-000
+
+    ModeloAnuncioResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do modelo
+          example: 1
+        nomeMarca:
+          type: string
+          description: Nome da marca
+          example: CHEVROLET
+        nome:
+          type: string
+          description: Nome do modelo
+          example: CORSA
+
+  
+        

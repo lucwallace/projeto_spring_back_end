@@ -6,31 +6,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
-import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.UUID;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Versao implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Anunciante {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    private UUID uuid_usuario;
+    private String username;
+    private Timestamp dataCriacao;
+    private String cep;
 
-    @ManyToOne
-    @JoinColumn(name = "modelo_id", nullable = false)
-    private Modelo modelo;
-
-    @OneToMany(mappedBy = "versao", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "anunciante", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private List<Anuncio> anuncios = new ArrayList<>();
 }

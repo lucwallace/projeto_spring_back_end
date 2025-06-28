@@ -48,4 +48,14 @@ public interface ModeloRepository extends JpaRepository<Modelo, Integer> {
     Optional<Modelo> findByModeloAndMarcaById(@Param("idModelo") Integer idModelo,
                                                 @Param("idMarca") Integer idMarca);
 
+    @Transactional(readOnly = true)
+    @Query("SELECT DISTINCT m FROM Modelo m " +
+            "JOIN m.tipoModelos t " +
+            "JOIN m.versoes v " +
+            "WHERE m.id = :idModelo AND t.id = :idTipo AND v.id = :idVersao")
+    Optional<Modelo> findByModeloAndTipoModeloAndVersaoById(
+            @Param("idModelo") Integer idModelo,
+            @Param("idTipo") Integer idTipo,
+            @Param("idVersao") Integer idVersao);
+
 }

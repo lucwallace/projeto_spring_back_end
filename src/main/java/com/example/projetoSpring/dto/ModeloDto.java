@@ -29,7 +29,6 @@ public class ModeloDto implements Serializable{
 	public ModeloDto(Modelo obj) {
 		id = obj.getId();
 		nome = obj.getNome();
-		preco = obj.getPreco();
 		
 	}
 
